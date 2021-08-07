@@ -41,6 +41,7 @@ public class UploadFilesService {
 
     @GetMapping(value="/files/{filename:.+}")
     public ResponseEntity<Resource> getFile(@PathVariable String fileName) throws Exception {
+        System.out.println(fileName);
         Resource resource = uploadFiles.load(fileName);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attchment; filename=\"" + resource.getFilename() + "\"")
@@ -52,7 +53,7 @@ public class UploadFilesService {
         List<File> files = uploadFiles.loadAll().map(path -> {
             String filename = path.getFileName().toString();
             String url = MvcUriComponentsBuilder.fromMethodName(UploadFilesService.class, "getFile", path.getFileName().toString()).build().toString();
-            return new File(filename, url);
+            return new File(filename, url).getAbsoluteFile();
         }).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
