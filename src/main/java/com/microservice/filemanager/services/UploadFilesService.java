@@ -39,9 +39,8 @@ public class UploadFilesService {
         }
     }
 
-    @GetMapping(value="/files/{filename:.+}")
+    @RequestMapping(value="/files/{fileName:.+}", method = RequestMethod.GET)
     public ResponseEntity<Resource> getFile(@PathVariable String fileName) throws Exception {
-        System.out.println(fileName);
         Resource resource = uploadFiles.load(fileName);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attchment; filename=\"" + resource.getFilename() + "\"")
