@@ -1,0 +1,1 @@
+exec java -jar -Dserver.port=1818 /build/libs/filemanager-0.0.1-SNAPSHOT.jar

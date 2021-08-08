@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.5.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id "org.sonarqube" version "3.1.1"
 }
 
 group = 'com.microservice'
@@ -9,12 +10,22 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
+    maven { url 'https://repo.spring.io/release' }
     mavenCentral()
+}
+
+sonarqube {
+  properties {
+    property "sonar.projectKey", "microservice-filemanager"
+    property "sonar.organization", "fanunez"
+    property "sonar.host.url", "https://sonarcloud.io"
+  }
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'com.google.code.gson:gson:2.8.6'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
