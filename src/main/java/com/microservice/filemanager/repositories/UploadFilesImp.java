@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 @Repository
 public class UploadFilesImp implements UploadFiles{
 
-    private final Path rootFolder = Paths.get("/home/superadmin/uploaded-files");
+    private final Path rootFolder = Paths.get("~/home/superadmin/uploaded-files");
 
     @Override
     public void save(MultipartFile file) throws Exception{
