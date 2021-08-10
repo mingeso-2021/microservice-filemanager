@@ -28,10 +28,10 @@ public class UploadFilesService {
     @Autowired
     private UploadFiles uploadFiles;
 
-    @PostMapping(value="/upload")
-    public ResponseEntity<String> uploadFiles(@RequestParam("file") List<MultipartFile> files){
+    @PostMapping(value="/upload/{value}")
+    public ResponseEntity<String> uploadFiles(@RequestParam("file") List<MultipartFile> files, @PathVariable String value ){
         try {
-            uploadFiles.save(files);
+            uploadFiles.save( files , value);
             return ResponseEntity.status(HttpStatus.OK).body("Los archivos fueron cargados correctamente al servidor");
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,8 +40,8 @@ public class UploadFilesService {
     }
 
     @RequestMapping(value="/files/{fileName:.+}", method = RequestMethod.GET)
-    public ResponseEntity<Resource> getFile(@PathVariable String fileName) throws Exception {
-        Resource resource = uploadFiles.load(fileName);
+    public ResponseEntity<Resource> getFile(@PathVariable String fileName, @PathVariable String value ) throws Exception {
+        Resource resource = uploadFiles.load(fileName, value);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attchment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
