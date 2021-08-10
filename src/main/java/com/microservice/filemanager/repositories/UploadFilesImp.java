@@ -15,14 +15,14 @@ import java.util.stream.Stream;
 @Repository
 public class UploadFilesImp implements UploadFiles{
 
-    private String PATH = "root/uploaded-files";
-    private final File directory = new File( PATH );
+    private String pathFolder = "root/uploaded-files";
+    private final File directory = new File( pathFolder );
 
     @Override
     public void save( MultipartFile file, String value ) throws Exception{
         // if root directory doesn't exist, then create
         if ( !directory.exists() ) directory.mkdir();
-        String newPath = PATH + "/" + value;
+        String newPath = pathFolder + "/" + value;
         // same with the new directory route using postulant's name like value
         File directoryRoute = new File ( newPath );
         if ( !directoryRoute.exists() ) directoryRoute.mkdir();
@@ -32,7 +32,7 @@ public class UploadFilesImp implements UploadFiles{
 
     @Override
     public Resource load(String name, String value) throws Exception{
-        Path rootFolder = Paths.get( PATH + value );
+        Path rootFolder = Paths.get( pathFolder + value );
         Path file = rootFolder.resolve(name);
         return new UrlResource(file.toUri());
     }
@@ -46,7 +46,7 @@ public class UploadFilesImp implements UploadFiles{
 
     @Override
     public Stream<Path> loadAll() throws Exception{
-        Path rootFolder = Paths.get( PATH );
+        Path rootFolder = Paths.get( pathFolder );
         return Files.walk(rootFolder, 1).filter(path -> !path.equals(rootFolder)).map(rootFolder::relativize);
     }
 }
