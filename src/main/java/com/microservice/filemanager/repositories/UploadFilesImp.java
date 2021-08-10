@@ -6,11 +6,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 // Java imports
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Stream;
+
 
 @Repository
 public class UploadFilesImp implements UploadFiles{
@@ -31,10 +33,11 @@ public class UploadFilesImp implements UploadFiles{
     }
 
     @Override
-    public Resource load(String name, String value) throws Exception{
-        Path rootFolder = Paths.get( pathFolder + value );
-        Path file = rootFolder.resolve(name);
-        return new UrlResource(file.toUri());
+    public byte[] load(String name, String value) throws IOException {
+        String newPath = PATH + "/" + value + "/" + name;
+        Path rootFolder = Paths.get( newPath );
+        byte[] file = Files.readAllBytes( rootFolder );
+        return file;
     }
 
     @Override

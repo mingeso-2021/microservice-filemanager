@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,12 +40,17 @@ public class UploadFilesService {
         }
     }
 
-    @RequestMapping(value="/files/{fileName:.+}", method = RequestMethod.GET)
-    public ResponseEntity<Resource> getFile(@PathVariable String fileName, @PathVariable String value ) throws Exception {
-        Resource resource = uploadFiles.load(fileName, value);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attchment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
+    @RequestMapping(value="/files/{value}/{fileName:.+}", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> getFile(@PathVariable String fileName, @PathVariable String value ) throws Exception {
+        byte[] contents = uploadFiles.load(fileName, value);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        // Here you have to set the actual filename of your pdf
+        String filename = "output.pdf";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
+        return response;
     }
 
     @GetMapping(value = "/getall")
