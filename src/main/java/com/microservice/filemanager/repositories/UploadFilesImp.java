@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 public class UploadFilesImp implements UploadFiles{
 
     private String PATH = "root/uploaded-files";
-//    private String PATH  = "/home/pancho/Desktop/uploaded-files";
     private final File directory = new File( PATH );
 
     @Override
