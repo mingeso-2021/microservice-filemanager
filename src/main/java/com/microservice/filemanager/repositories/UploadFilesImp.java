@@ -34,7 +34,7 @@ public class UploadFilesImp implements UploadFiles{
 
     @Override
     public byte[] load(String name, String value) throws IOException {
-        String newPath = PATH + "/" + value + "/" + name;
+        String newPath = pathFolder + "/" + value + "/" + name;
         Path rootFolder = Paths.get( newPath );
         byte[] file = Files.readAllBytes( rootFolder );
         return file;
